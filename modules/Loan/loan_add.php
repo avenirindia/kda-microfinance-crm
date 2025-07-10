@@ -33,7 +33,6 @@ if(isset($_POST['submit'])){
     }
 }
 ?>
-<<<<<<< HEAD
 
 <h2>Add New Loan</h2>
 
@@ -45,5 +44,3 @@ if(isset($_POST['submit'])){
     Start Date: <input type="date" name="start_date" required><br><br>
     <input type="submit" name="submit" value="Add Loan">
 </form>
-=======
->>>>>>> 6706effbb12fa4c0699480fe3689e13830cdd71a

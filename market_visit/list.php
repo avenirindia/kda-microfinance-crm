@@ -38,4 +38,4 @@ if($result->num_rows > 0){
 </table>
 
 <br>
-<a href="add.php">➕ Add New Visit</a>
+<a href="visit_report.php" target="_blank">🖨️ Download PDF Report</a>

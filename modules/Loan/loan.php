@@ -1,6 +1,6 @@
 <h2>Add Loan Details</h2>
 
-<form method="post" action="emi_calculation.php">
+<form method="post" action="../loan/emi_calculation.php">
     <label>Loan Amount:</label>
     <input type="number" name="loan_amount" required><br><br>
 

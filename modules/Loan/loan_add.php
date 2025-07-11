@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // নিচে বাকি ইনসার্ট কোড
-<?php
 include '../../config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -38,4 +38,4 @@ if ($conn->query($insertLoan)) {
 } else {
     echo "❌ Loan Insert Error: " . $conn->error;
 }
-?>
+

@@ -1,4 +1,8 @@
 <?php
+ob_clean();
+ob_start();
+?>
+<?php
 include '../../config/db.php';
 ?>
 

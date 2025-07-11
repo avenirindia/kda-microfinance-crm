@@ -1,46 +1,41 @@
 <?php
 include '../../config/db.php';
 
-if(isset($_POST['submit'])){
-    $customer_name = $_POST['customer_name'];
-    $loan_amount   = $_POST['loan_amount'];
-    $interest_rate = $_POST['interest_rate'];
-    $period_months = $_POST['period_months'];
-    $start_date    = $_POST['start_date'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    die('Invalid Access!');
+}
 
-    // Loan Insert
-    $sql = "INSERT INTO loans (customer_name, loan_amount, interest_rate, period_months, start_date)
-            VALUES ('$customer_name', '$loan_amount', '$interest_rate', '$period_months', '$start_date')";
+// নিচে বাকি ইনসার্ট কোড
+<?php
+include '../../config/db.php';
 
-    if($conn->query($sql) === TRUE){
-        $loan_id = $conn->insert_id;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    die('Invalid Access!');
+}
 
-        // EMI Calculate
-        $monthly_interest = ($loan_amount * ($interest_rate/100)) / $period_months;
-        $emi_amount = ($loan_amount / $period_months) + $monthly_interest;
+$loan_amount = $_POST['loan_amount'];
+$interest_rate = $_POST['interest_rate'];
+$period_months = $_POST['period_months'];
+$start_date = $_POST['start_date'];
+$emi = $_POST['emi'];
 
-        // EMI Schedule Generate
-        for($i=1; $i<=$period_months; $i++){
-            $payment_date = date('Y-m-d', strtotime("+$i month", strtotime($start_date)));
-            $sql_emi = "INSERT INTO emi_schedule (loan_id, installment_no, payment_date, emi_amount)
-                        VALUES ('$loan_id', '$i', '$payment_date', '$emi_amount')";
-            $conn->query($sql_emi);
-        }
+$insertLoan = "INSERT INTO loans (loan_amount, interest_rate, period_months, start_date) 
+               VALUES ('$loan_amount', '$interest_rate', '$period_months', '$start_date')";
 
-        echo "<p style='color:green;'>✅ Loan Added Successfully with EMI Schedule!</p>";
-    } else {
-        echo "<p style='color:red;'>❌ Error: " . $conn->error . "</p>";
+if ($conn->query($insertLoan)) {
+    $loan_id = $conn->insert_id;
+
+    for ($i = 1; $i <= $period_months; $i++) {
+        $payment_date = date('Y-m-d', strtotime("+$i month", strtotime($start_date)));
+
+        $insertEMI = "INSERT INTO emi_schedule (loan_id, installment_no, payment_date, emi_amount) 
+                      VALUES ('$loan_id', '$i', '$payment_date', '$emi')";
+
+        $conn->query($insertEMI);
     }
+
+    echo "<p style='color:green;'>✅ EMI Schedule Successfully Saved to Database!</p>";
+} else {
+    echo "❌ Loan Insert Error: " . $conn->error;
 }
 ?>
-
-<h2>Add New Loan</h2>
-
-<form method="post">
-    Customer Name: <input type="text" name="customer_name" required><br><br>
-    Loan Amount: <input type="number" name="loan_amount" required><br><br>
-    Interest Rate (%): <input type="number" step="0.01" name="interest_rate" required><br><br>
-    Period (Months): <input type="number" name="period_months" required><br><br>
-    Start Date: <input type="date" name="start_date" required><br><br>
-    <input type="submit" name="submit" value="Add Loan">
-</form>

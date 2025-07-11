@@ -1,6 +1,10 @@
 <a href="admin_complaints_export.php">📥 Download CSV Report</a><br><br>
 <?php
-include '../config/db.php';
+include '../../../config/db.php';
+
+$res = $conn->query("SELECT c.*, e.emp_name, e.emp_code FROM employee_complaints c
+                     JOIN employees e ON c.emp_id = e.id");
+
 
 $res = $conn->query("SELECT c.*, e.emp_name, e.emp_code FROM employee_complaints c
                      JOIN employees e ON c.emp_id = e.id");

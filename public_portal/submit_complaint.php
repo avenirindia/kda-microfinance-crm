@@ -1,6 +1,5 @@
 <?php
 include '../config/db.php';
-$conn = Database::connect();
 
 if(isset($_POST['emp_code'])){
     $emp_code       = $_POST['emp_code'];

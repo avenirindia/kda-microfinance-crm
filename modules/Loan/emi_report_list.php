@@ -62,3 +62,20 @@ if($result->num_rows > 0){
 }
 ?>
 </table>
+<?php
+// Total EMI Paid
+$sql_paid = "SELECT SUM(emi_amount) AS total_paid FROM emi_schedule WHERE status='Paid'";
+$result_paid = $conn->query($sql_paid);
+$row_paid = $result_paid->fetch_assoc();
+$total_paid = $row_paid['total_paid'];
+
+// Total EMI Due
+$sql_due = "SELECT SUM(emi_amount) AS total_due FROM emi_schedule WHERE status='Pending'";
+$result_due = $conn->query($sql_due);
+$row_due = $result_due->fetch_assoc();
+$total_due = $row_due['total_due'];
+?>
+
+<h3>Summary:</h3>
+<p>Total EMI Paid: ৳ <?php echo number_format($total_paid, 2); ?></p>
+<p>Total EMI Due: ৳ <?php echo number_format($total_due, 2); ?></p>

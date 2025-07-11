@@ -46,6 +46,30 @@ if(isset($_POST['add'])){
 ?>
 
 <!DOCTYPE html>
+<div class="card mb-3">
+    <div class="card-header bg-danger text-white">Location</div>
+    <div class="card-body">
+
+        <button type="button" class="btn btn-outline-primary mb-3" onclick="getLocation()">📍 Detect Location</button>
+
+        <div class="mb-3">
+            <label>Latitude:</label>
+            <input type="text" class="form-control" name="latitude" id="latitude" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label>Longitude:</label>
+            <input type="text" class="form-control" name="longitude" id="longitude" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label>Approx Address:</label>
+            <input type="text" class="form-control" name="approx_address" id="approx_address" readonly>
+        </div>
+
+    </div>
+</div>
+
 <html><h3>Location</h3>
 <button type="button" onclick="getLocation()">📍 Detect Location</button><br><br>
 Latitude: <input type="text" name="latitude" id="latitude" readonly><br>
@@ -174,26 +198,3 @@ Approx Address: <input type="text" name="approx_address" id="approx_address" rea
 </div>
 
 
-<div class="card mb-3">
-    <div class="card-header bg-danger text-white">Location</div>
-    <div class="card-body">
-
-        <button type="button" class="btn btn-outline-primary mb-3" onclick="getLocation()">📍 Detect Location</button>
-
-        <div class="mb-3">
-            <label>Latitude:</label>
-            <input type="text" class="form-control" name="latitude" id="latitude" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label>Longitude:</label>
-            <input type="text" class="form-control" name="longitude" id="longitude" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label>Approx Address:</label>
-            <input type="text" class="form-control" name="approx_address" id="approx_address" readonly>
-        </div>
-
-    </div>
-</div>

@@ -1,19 +1,16 @@
 <?php
-include '../../config/db.php';
-$conn = Database::connect();
-
+include '../../../config/db.php';
 $id = $_GET['id'];
-$result = $conn->query("SELECT * FROM employees WHERE id='$id'");
-$data = $result->fetch_assoc();
+$get = $conn->query("SELECT * FROM employees WHERE id='$id'");
+$data = $get->fetch_assoc();
 ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<h2>Employee Details</h2>
-<p><strong>Employee Code:</strong> <?php echo $data['emp_code']; ?></p>
-<p><strong>Name:</strong> <?php echo $data['emp_name']; ?></p>
-<p><strong>Mobile:</strong> <?php echo $data['mobile']; ?></p>
-<p><strong>CTC:</strong> <?php echo $data['total_ctc']; ?></p>
-
-<p><strong>Aadhaar File:</strong> <?php if($data['aadhar_file']) echo "<a href='".$data['aadhar_file']."' target='_blank'>View</a>"; ?></p>
-<p><strong>PAN File:</strong> <?php if($data['pan_file']) echo "<a href='".$data['pan_file']."' target='_blank'>View</a>"; ?></p>
-
-<p><a href="emp_list.php">Back to List</a></p>
+<div class="container mt-4">
+    <h2>View Employee Details</h2>
+    <div class="card p-3">
+        <h5>Name: <?php echo $data['emp_name']; ?></h5>
+        <p>Mobile: <?php echo $data['mobile']; ?></p>
+        <a href="emp_list.php" class="btn btn-secondary">🔙 Back</a>
+    </div>
+</div>

@@ -1,30 +1,35 @@
-<?php
-include '../../config/db.php';
-$conn = Database::connect();
+<?php include '../../../config/db.php'; ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-$result = $conn->query("SELECT * FROM employees ORDER BY id DESC");
-?>
+<div class="container mt-4">
+    <h2>Employee List</h2>
+    <a href="emp_add.php" class="btn btn-success mb-3">➕ Add New</a>
 
-<h2>Employee List</h2>
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Mobile</th>
-        <th>CTC</th>
-        <th>Action</th>
-    </tr>
-
-    <?php while($row = $result->fetch_assoc()) { ?>
-    <tr>
-        <td><?php echo $row['emp_code']; ?></td>
-        <td><?php echo $row['emp_name']; ?></td>
-        <td><?php echo $row['mobile']; ?></td>
-        <td><?php echo $row['total_ctc']; ?></td>
-        <td>
-            <a href="emp_view.php?id=<?php echo $row['id']; ?>">View</a> | 
-            <a href="emp_edit.php?id=<?php echo $row['id']; ?>">Edit</a>
-        </td>
-    </tr>
-    <?php } ?>
-</table>
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $res = $conn->query("SELECT * FROM employees ORDER BY id DESC");
+            while($row = $res->fetch_assoc()){
+                echo "<tr>
+                    <td>{$row['id']}</td>
+                    <td>{$row['emp_name']}</td>
+                    <td>{$row['mobile']}</td>
+                    <td>
+                        <a href='emp_view.php?id={$row['id']}' class='btn btn-info btn-sm'>👁️ View</a>
+                        <a href='emp_edit.php?id={$row['id']}' class='btn btn-warning btn-sm'>✏️ Edit</a>
+                        <a href='emp_delete.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>🗑️ Delete</a>
+                    </td>
+                </tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>

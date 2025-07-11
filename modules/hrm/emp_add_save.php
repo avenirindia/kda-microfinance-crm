@@ -1,6 +1,10 @@
 <?php
-include '../../../config/db.php';
+include("../../config/db.php");
 
+// তারপর তোমার query বা insertion
+$employee_name = $conn->real_escape_string($_POST['employee_name']);
+// বাকি কোড...
+?>
 $emp_name = $conn->real_escape_string($_POST['emp_name']);
 $mobile   = $conn->real_escape_string($_POST['mobile']);
 

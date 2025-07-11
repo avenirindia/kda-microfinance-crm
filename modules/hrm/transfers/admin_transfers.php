@@ -41,4 +41,16 @@ include '../../../config/db.php';
                 <td>{$row['emp_code']}</td>
                 <td>{$row['emp_name']}</td>
                 <td>{$row['from_branch']}</td>
-                <td>{$row['to_branch']}_]()
+                <td>{$row['to_branch']}</td>
+                <td>{$row['transfer_date']}</td>
+                <td>{$row['remarks']}</td>
+            </tr>";
+        }
+    } else {
+        echo "<tr><td colspan='6'>No Transfer Records Found</td></tr>";
+    }
+    ?>
+</table>
+
+</body>
+</html>

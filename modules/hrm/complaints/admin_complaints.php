@@ -27,3 +27,29 @@ while($row = $res->fetch_assoc()){
 }
 echo "</table>";
 ?>
+<?php
+include '../config/db.php';
+
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment;filename="complaints_report.csv"');
+
+$output = fopen('php://output', 'w');
+fputcsv($output, array('Emp Code', 'Name', 'Complaint Type', 'Complaint Text', 'Status', 'Date'));
+
+$res = $conn->query("SELECT c.*, e.emp_name, e.emp_code FROM employee_complaints c
+                     JOIN employees e ON c.emp_id = e.id");
+
+while($row = $res->fetch_assoc()){
+    fputcsv($output, array(
+        $row['emp_code'],
+        $row['emp_name'],
+        $row['complaint_type'],
+        $row['complaint_text'],
+        $row['status'],
+        $row['created_at']
+    ));
+}
+
+fclose($output);
+exit;
+?>

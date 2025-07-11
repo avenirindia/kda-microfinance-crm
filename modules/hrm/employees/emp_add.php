@@ -1,76 +1,66 @@
-<?php include '../../../config/db.php'; ?>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<?php
+include '../../../config/db.php';
+$emp_name = $_POST['emp_name'];
+$mobile = $_POST['mobile'];
+$email = $_POST['email'];
+$address = $_POST['address'];
 
-<div class="container mt-4">
-    <h2>Add New Employee</h2>
+$basic_salary = $_POST['basic_salary'];
+$hra = $_POST['hra'];
+$conveyance = $_POST['conveyance'];
+$incentive = $_POST['incentive'];
+$bonus = $_POST['bonus'];
+$other_allowances = $_POST['other_allowances'];
+$total_payment = $_POST['total_payment'];
 
-    <form action="emp_add_save.php" method="post" enctype="multipart/form-data">
-        <!-- Employee Info -->
-        <div class="card mb-3">
-            <div class="card-header bg-primary text-white">Employee Info</div>
-            <div class="card-body">
-                <div class="mb-2">
-                    <label>Employee Name:</label>
-                    <input type="text" name="emp_name" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label>Mobile No:</label>
-                    <input type="text" name="mobile" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label>Email:</label>
-                    <input type="email" name="email" class="form-control">
-                </div>
-                <div class="mb-2">
-                    <label>Address:</label>
-                    <textarea name="address" class="form-control"></textarea>
-                </div>
-            </div>
-        </div>
+$esi = $_POST['esi'];
+$pf = $_POST['pf'];
+$dev_fee = $_POST['dev_fee'];
+$tds = $_POST['tds'];
+$ptax = $_POST['ptax'];
+$others_deduction = $_POST['others_deduction'];
+$total_deduction = $_POST['total_deduction'];
+$net_salary = $_POST['net_salary'];
 
-        <!-- KYC Documents -->
-        <div class="card mb-3">
-            <div class="card-header bg-secondary text-white">KYC Documents Upload</div>
-            <div class="card-body">
-                <div class="mb-2"><label>Aadhaar:</label><input type="file" name="aadhaar_file" class="form-control"></div>
-                <div class="mb-2"><label>PAN:</label><input type="file" name="pan_file" class="form-control"></div>
-                <div class="mb-2"><label>Bank Passbook:</label><input type="file" name="bank_file" class="form-control"></div>
-                <div class="mb-2"><label>Qualification Certificate:</label><input type="file" name="qualification_file" class="form-control"></div>
-                <div class="mb-2"><label>Photo:</label><input type="file" name="photo" class="form-control"></div>
-            </div>
-        </div>
+$from_branch = $_POST['from_branch'];
+$to_branch = $_POST['to_branch'];
+$transfer_reason = $_POST['transfer_reason'];
+$transfer_date = $_POST['transfer_date'];
 
-        <!-- CTC Breakup -->
-        <div class="card mb-3">
-            <div class="card-header bg-success text-white">CTC Breakup</div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6 mb-2"><label>Basic Salary (₹):</label><input type="number" class="form-control" name="basic_salary" required></div>
-                    <div class="col-md-6 mb-2"><label>HRA (₹):</label><input type="number" class="form-control" name="hra"></div>
-                    <div class="col-md-4 mb-2"><label>ESI (%):</label><input type="number" step="0.01" class="form-control" name="esi"></div>
-                    <div class="col-md-4 mb-2"><label>PF (%):</label><input type="number" step="0.01" class="form-control" name="pf"></div>
-                    <div class="col-md-4 mb-2"><label>Company Dev Fee (%):</label><input type="number" step="0.01" class="form-control" name="dev_fee"></div>
-                    <div class="col-md-6 mb-2"><label>Conveyance (₹):</label><input type="number" class="form-control" name="conveyance"></div>
-                    <div class="col-md-6 mb-2"><label>Incentive (₹):</label><input type="number" class="form-control" name="incentive"></div>
-                    <div class="col-md-6 mb-2"><label>Bonus (₹):</label><input type="number" class="form-control" name="bonus"></div>
-                    <div class="col-md-6 mb-2"><label>Other Allowances (₹):</label><input type="number" class="form-control" name="other_allowances"></div>
-                    <div class="col-md-6 mb-2"><label>Total CTC (₹):</label><input type="number" class="form-control" name="total_ctc" required></div>
-                </div>
-            </div>
-        </div>
+$check = $conn->query("SELECT * FROM employees WHERE emp_name='$emp_name' AND mobile='$mobile'");
+if($check->num_rows > 0){
+    echo "<div class='alert alert-danger'>❌ এই এমপ্লয়ি আগেই আছে!</div>";
+    exit;
+}
 
-        <!-- Transfer Info -->
-        <div class="card mb-3">
-            <div class="card-header bg-warning">Transfer Info (if any)</div>
-            <div class="card-body">
-                <div class="mb-2"><label>From Branch:</label><input type="text" name="from_branch" class="form-control"></div>
-                <div class="mb-2"><label>To Branch:</label><input type="text" name="to_branch" class="form-control"></div>
-                <div class="mb-2"><label>Transfer Reason:</label><input type="text" name="transfer_reason" class="form-control"></div>
-                <div class="mb-2"><label>Transfer Date:</label><input type="date" name="transfer_date" class="form-control"></div>
-            </div>
-        </div>
+function uploadFile($fileInput){
+    if($_FILES[$fileInput]['name'] != ''){
+        $filename = time().'_'.$_FILES[$fileInput]['name'];
+        move_uploaded_file($_FILES[$fileInput]['tmp_name'], '../../../uploads/'.$filename);
+        return $filename;
+    }
+    return '';
+}
 
-        <button type="submit" class="btn btn-primary">➕ Add Employee</button>
-        <a href="emp_list.php" class="btn btn-secondary">📋 Employee List</a>
-    </form>
-</div>
+$aadhaar_file = uploadFile('aadhaar_file');
+$pan_file = uploadFile('pan_file');
+$bank_file = uploadFile('bank_file');
+$qualification_file = uploadFile('qualification_file');
+$photo = uploadFile('photo');
+
+$insert = "INSERT INTO employees(emp_name, mobile, email, address, aadhaar_file, pan_file, bank_file, qualification_file, photo, 
+basic_salary, hra, conveyance, incentive, bonus, other_allowances, total_payment, 
+esi, pf, dev_fee, tds, ptax, others_deduction, total_deduction, net_salary, 
+from_branch, to_branch, transfer_reason, transfer_date) 
+VALUES('$emp_name', '$mobile', '$email', '$address', '$aadhaar_file', '$pan_file', '$bank_file', '$qualification_file', '$photo',
+'$basic_salary', '$hra', '$conveyance', '$incentive', '$bonus', '$other_allowances', '$total_payment',
+'$esi', '$pf', '$dev_fee', '$tds', '$ptax', '$others_deduction', '$total_deduction', '$net_salary',
+'$from_branch', '$to_branch', '$transfer_reason', '$transfer_date')";
+
+if($conn->query($insert)){
+    echo "<div class='alert alert-success'>✅ এমপ্লয়ি সফলভাবে যোগ হয়েছে!</div>";
+    echo "<a href='emp_list.php' class='btn btn-primary'>📋 Employee List</a>";
+} else {
+    echo "<div class='alert alert-danger'>❌ Error: ".$conn->error."</div>";
+}
+?>

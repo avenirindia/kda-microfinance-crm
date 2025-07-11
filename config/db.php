@@ -1,12 +1,5 @@
 <?php
-$servername = "localhost";
-$username   = "root";
-$password   = "";
-$dbname     = "kda_microfinance_crm";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
+$conn = new mysqli("localhost", "root", "", "kda_microfinance_crm");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

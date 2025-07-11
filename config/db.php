@@ -1,11 +1,13 @@
 <?php
-$host = "sql301.freemysqlhosting.net";
-$user = "your_db_user";
-$pass = "your_password";
-$db   = "your_db_name";
+$servername = "localhost";
+$username   = "root";
+$password   = "";
+$dbname     = "kda_microfinance_crm";
 
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
 if ($conn->connect_error) {
-    die("Connection Failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>

@@ -126,3 +126,47 @@ $pdf->Output('emi_report.pdf', 'I');
 ?>
 <a href="emi_report_pdf.php" target="_blank">📄 Download PDF Report</a>
 <br><br>
+<?php
+ob_clean();
+ob_start();
+
+include '../../config/db.php';
+require_once '../../pdf/tcpdf.php';
+
+// Create new PDF document
+$pdf = new TCPDF();
+$pdf->AddPage();
+
+// Title
+$pdf->SetFont('helvetica', 'B', 16);
+$pdf->Cell(0, 10, 'EMI Receive Report', 0, 1, 'C');
+$pdf->Ln(5);
+
+// Table header
+$pdf->SetFont('helvetica', 'B', 12);
+$pdf->Cell(25, 7, 'Loan ID', 1);
+$pdf->Cell(25, 7, 'Installment', 1);
+$pdf->Cell(35, 7, 'Payment Date', 1);
+$pdf->Cell(25, 7, 'EMI Amount', 1);
+$pdf->Cell(25, 7, 'Status', 1);
+$pdf->Cell(45, 7, 'Receive Date', 1);
+$pdf->Ln();
+
+// Data
+$pdf->SetFont('helvetica', '', 11);
+$sql = "SELECT * FROM emi_schedule ORDER BY payment_date ASC";
+$result = $conn->query($sql);
+
+while($row = $result->fetch_assoc()){
+    $pdf->Cell(25, 7, $row['loan_id'], 1);
+    $pdf->Cell(25, 7, $row['installment_no'], 1);
+    $pdf->Cell(35, 7, $row['payment_date'], 1);
+    $pdf->Cell(25, 7, $row['emi_amount'], 1);
+    $pdf->Cell(25, 7, $row['status'], 1);
+    $pdf->Cell(45, 7, $row['payment_received_date'], 1);
+    $pdf->Ln();
+}
+
+ob_end_clean();
+$pdf->Output('emi_report.pdf', 'I');
+?>
